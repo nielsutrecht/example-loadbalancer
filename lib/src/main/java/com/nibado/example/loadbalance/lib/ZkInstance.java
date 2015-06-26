@@ -31,6 +31,8 @@ public class ZkInstance implements Watcher {
 
     private void persistState() throws KeeperException, InterruptedException {
         zk.setData(zNode, getStateBytes(), -1);
+        zk.setData("/nodes", new byte[0], -1);
+        LOG.debug("Updated node {}", zNode);
     }
 
     private byte[] getStateBytes() {
@@ -92,6 +94,13 @@ public class ZkInstance implements Watcher {
 
             return this;
         }
+
+        public Builder queueSize(int size) {
+            state.setQueueSize(size);
+
+            return this;
+        }
+
         public void update() throws IOException {
             try {
                 persistState();
