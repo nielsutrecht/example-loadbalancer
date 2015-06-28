@@ -10,7 +10,7 @@
     <modules>
         <module>lib</module>
         <module>hub</module>
-        <module>instance</module>
+        <module>node</module>
     </modules>
     <packaging>pom</packaging>
     <properties>

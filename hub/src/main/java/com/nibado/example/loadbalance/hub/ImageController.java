@@ -10,8 +10,8 @@ import org.springframework.web.context.request.async.DeferredResult;
 
 @RestController
 @RequestMapping("/image")
-public class DataController {
-    private static final Logger LOG = LoggerFactory.getLogger(DataController.class);
+public class ImageController {
+    private static final Logger LOG = LoggerFactory.getLogger(ImageController.class);
 
     @Autowired
     private NodeList nodeList;

@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>lb-instance</artifactId>
+    <artifactId>lb-node</artifactId>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
