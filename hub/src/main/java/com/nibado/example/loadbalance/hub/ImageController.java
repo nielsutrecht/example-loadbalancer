@@ -20,9 +20,7 @@ public class ImageController {
     public DeferredResult<String> bottleneck() {
         final DeferredResult<String> result = new DeferredResult<>();
 
-        final String node = nodeList.select().getUrl();
-
-        final BottleneckCommand cmd = new BottleneckCommand(node);
+        final HubImageCommand cmd = new HubImageCommand(nodeList);
         cmd.observe().subscribe((v) -> {
             result.setResult(v);
         });

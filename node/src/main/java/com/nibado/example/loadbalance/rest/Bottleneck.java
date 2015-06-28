@@ -25,17 +25,14 @@ public class Bottleneck {
             throw new RuntimeException("Something went horrible wrong");
         }
 
-        if (status.maxWait - status.minWait <= 0) {
-            return;
-        }
-        final int wait = random.nextInt(status.maxWait - status.minWait) + status.minWait;
+        final int wait = status.maxWait - status.minWait == 0 ? status.minWait : random.nextInt(status.maxWait - status.minWait) + status.minWait;
 
         synchronized (getMonitor(monitor)) {
             try {
                 Thread.sleep(wait);
             }
             catch (final InterruptedException e) {
-
+                e.printStackTrace();
             }
         }
     }

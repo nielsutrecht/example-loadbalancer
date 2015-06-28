@@ -14,21 +14,20 @@ import com.netflix.hystrix.HystrixCommandKey;
 import com.netflix.hystrix.HystrixCommandProperties;
 import com.netflix.hystrix.HystrixThreadPoolKey;
 
-public class BottleneckCommand extends HystrixCommand<String> {
-    private static final Logger LOG = LoggerFactory.getLogger(BottleneckCommand.class);
+public class NodeImageCommand extends HystrixCommand<String> {
+    private static final Logger LOG = LoggerFactory.getLogger(NodeImageCommand.class);
     private final String node;
 
-    public BottleneckCommand(final String node) {
-        super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey("BottleneckGroup")).andCommandKey(HystrixCommandKey.Factory.asKey("Image"))
-            .andThreadPoolKey(HystrixThreadPoolKey.Factory.asKey("BottleneckPool-" + node)).andCommandPropertiesDefaults(
-                HystrixCommandProperties.Setter().withExecutionTimeoutInMilliseconds(1000).withCircuitBreakerEnabled(false).withFallbackEnabled(true)));
+    public NodeImageCommand(final String node) {
+        super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey("Hub")).andCommandKey(HystrixCommandKey.Factory.asKey("NodeImage")).andThreadPoolKey(
+            HystrixThreadPoolKey.Factory.asKey("Node-" + node)).andCommandPropertiesDefaults(
+            HystrixCommandProperties.Setter().withExecutionTimeoutInMilliseconds(1000).withCircuitBreakerEnabled(false).withFallbackEnabled(false)));
 
         this.node = node;
     }
 
     @Override
     protected String run() {
-
         final HttpClient client = HttpClientBuilder.create().build();
         final HttpGet request = new HttpGet(node + "d/image");
 
@@ -40,10 +39,5 @@ public class BottleneckCommand extends HystrixCommand<String> {
             LOG.error("Error in GET request", e);
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    protected String getFallback() {
-        return "img/fail.png";
     }
 }
