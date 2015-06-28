@@ -16,6 +16,24 @@
 		<div class="col-md-6">
 			<div class="panel panel-default">
 				<div class="panel-heading">
+			    	<h3 class="panel-title">Settings</h3>
+			  	</div>
+			  	<div class="panel-body">
+					<input type="radio" name="speed" ng-model="speed" value="-1" /> off
+					<input type="radio" name="speed" ng-model="speed" value="1000" /> 1000 ms
+					<input type="radio" name="speed" ng-model="speed" value="500" /> 500 ms
+					<input type="radio" name="speed" ng-model="speed" value="250" /> 250 ms
+					<input type="radio" name="speed" ng-model="speed" value="100" /> 100 ms
+					<input type="radio" name="speed" ng-model="speed" value="50" /> 50 ms
+					<input type="radio" name="speed" ng-model="speed" value="25" /> 25 ms
+			  	</div>
+			</div>			
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6">
+			<div class="panel panel-default">
+				<div class="panel-heading">
 			    	<h3 class="panel-title">Data view</h3>
 			  	</div>
 			  	<div class="panel-body">
@@ -29,9 +47,15 @@
 			    	<h3 class="panel-title">Node status</h3>
 			  	</div>
 			  	<div class="panel-body">
-					<div class="row" ng-repeat="n in nodes">
-						<node node="n"></node>
-					</div>
+					<nodes nodes="nodes"></nodes>
+			  	</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+			    	<h3 class="panel-title">Hub status</h3>
+			  	</div>
+			  	<div class="panel-body">
+					<hub></hub>
 			  	</div>
 			</div>
 		</div>
