@@ -1,0 +1,11 @@
+<div ng-repeat="t in threads">
+	<div class="row">
+		<div class="col-md-12">
+			<strong>{{t.poolName}}</strong>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-3">Executed: {{t.cumulativeExecuted}}</div>
+		<div class="col-md-3">Pool: {{t.currentQueueSize}} / {{t.currentPoolSize}}</div>
+	</div>	
+</div>

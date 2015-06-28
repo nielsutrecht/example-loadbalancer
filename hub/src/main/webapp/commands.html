@@ -1,0 +1,14 @@
+<div class="row">
+	<div class="col-md-2">Command</div>
+	<div class="col-md-2">Current</div>
+	<div class="col-md-2">Error</div>
+	<div class="col-md-2">Total</div>
+	<div class="col-md-2">Mean</div>
+</div>
+<div class="row" ng-repeat="c in commands">
+	<div class="col-md-2">{{c.commandKey}}</div>
+	<div class="col-md-2">{{c.currentConcurrentExecutionCount}}</div>
+	<div class="col-md-2">{{c.errorCount}}</div>
+	<div class="col-md-2">{{c.totalCount}}</div>
+	<div class="col-md-2">{{c.executionTimeMean}} ms</div>
+</div>

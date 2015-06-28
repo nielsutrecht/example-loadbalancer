@@ -1,5 +1,16 @@
+<div class="row">
+	<div class="col-md-2">Host</div>
+	<div class="col-md-1">Port</div> 
+	<div class="col-md-1">Queue</div>
+	<div class="col-md-1">Count</div>
+	<div class="col-md-2">Min</div>
+	<div class="col-md-2">Max</div>
+</div>
 <div class="row" ng-repeat="node in nodes">
-	<div class="col-md-2">{{node.host}}</div>
+	<div class="col-md-2">{{node.hostname}}</div>
 	<div class="col-md-1">{{node.port}}</div> 
-	<div class="col-md-1">{{node.queue}}</div>
+	<div class="col-md-1">{{node.queueSize}}</div>
+	<div class="col-md-1">{{node.count}}</div>
+	<div class="col-md-2">{{node.minDuration}} ms</div>
+	<div class="col-md-2">{{node.maxDuration}} ms</div>
 </div>

@@ -1,10 +1,8 @@
 package com.nibado.example.loadbalance.lib;
 
-import sun.security.jca.GetInstance;
+import java.util.Locale;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
-public class InstanceState {
+public class NodeState {
     private int port;
     private String hostname;
     private long count;
@@ -12,11 +10,11 @@ public class InstanceState {
     private int maxDuration;
     private int queueSize;
 
-    public InstanceState() {
+    public NodeState() {
         minDuration = Integer.MAX_VALUE;
     }
 
-    public InstanceState(String hostname, int port) {
+    public NodeState(final String hostname, final int port) {
         this();
         this.hostname = hostname;
         this.port = port;
@@ -34,7 +32,7 @@ public class InstanceState {
         return count;
     }
 
-    public void setCount(long count) {
+    public void setCount(final long count) {
         this.count = count;
     }
 
@@ -42,7 +40,7 @@ public class InstanceState {
         return minDuration;
     }
 
-    public void setMinDuration(int minDuration) {
+    public void setMinDuration(final int minDuration) {
         this.minDuration = minDuration;
     }
 
@@ -50,7 +48,7 @@ public class InstanceState {
         return maxDuration;
     }
 
-    public void setMaxDuration(int maxDuration) {
+    public void setMaxDuration(final int maxDuration) {
         this.maxDuration = maxDuration;
     }
 
@@ -58,19 +56,17 @@ public class InstanceState {
         return queueSize;
     }
 
-    public void setQueueSize(int queueSize) {
+    public void setQueueSize(final int queueSize) {
         this.queueSize = queueSize;
     }
 
     @Override
     public String toString() {
-        return "InstanceState{" +
-                "port=" + port +
-                ", hostname='" + hostname + '\'' +
-                ", count=" + count +
-                ", minDuration=" + minDuration +
-                ", maxDuration=" + maxDuration +
-                ", queueSize=" + queueSize +
-                '}';
+        return "NodeState{" + "port=" + port + ", hostname='" + hostname + '\'' + ", count=" + count + ", minDuration=" + minDuration + ", maxDuration="
+            + maxDuration + ", queueSize=" + queueSize + '}';
+    }
+
+    public String getUrl() {
+        return String.format(Locale.ROOT, "http://%s:%s", hostname, port);
     }
 }

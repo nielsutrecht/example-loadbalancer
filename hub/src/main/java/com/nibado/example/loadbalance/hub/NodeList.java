@@ -3,45 +3,39 @@ package com.nibado.example.loadbalance.hub;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 import java.util.Random;
 
 import org.springframework.stereotype.Component;
 
+import com.nibado.example.loadbalance.lib.NodeListener;
+import com.nibado.example.loadbalance.lib.NodeState;
+
 @Component
-public class NodeList {
-    private final List<Node> nodes;
+public class NodeList implements NodeListener {
+    private List<NodeState> nodes;
+    private final Random random = new Random();
 
     public NodeList() {
-        final Random random = new Random();
+
         nodes = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            final Node n = new Node();
-            n.port = 8090 + i;
-            n.host = "192.168.1." + (1 + i);
-            n.queue = random.nextInt(20);
+            final NodeState n = new NodeState("192.168.1." + (1 + i), 9000 + i);
+            n.setQueueSize(random.nextInt(20));
+
             nodes.add(n);
         }
     }
 
-    public List<Node> getList() {
+    public List<NodeState> getList() {
         return Collections.unmodifiableList(nodes);
     }
 
-    public Node select() {
-        if (nodes.size() == 0) {
-            return null;
-        }
-        return nodes.get(0);
+    public NodeState select() {
+        return nodes.get(random.nextInt(nodes.size()));
     }
 
-    public static class Node {
-        public String host;
-        public int port;
-        public int queue;
-
-        public String getUrl() {
-            return String.format(Locale.ROOT, "http://%s:%s/", host, port);
-        }
+    @Override
+    public void listUpdated(final List<NodeState> nodes) {
+        this.nodes = nodes;
     }
 }

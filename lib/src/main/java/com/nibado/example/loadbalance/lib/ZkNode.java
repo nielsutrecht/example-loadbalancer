@@ -19,18 +19,13 @@ public class ZkNode implements Watcher {
     private static final Logger LOG = LoggerFactory.getLogger(ZkNode.class);
     private ZooKeeper zk;
     private final Kryo kryo;
-    private final String hostname;
-    private final int port;
-    private final InstanceState state;
+    private final NodeState state;
     private String zNode;
 
     public ZkNode(final String hostname, final int port) throws Exception {
-        this.port = port;
-        this.hostname = hostname;
-        this.state = new InstanceState(hostname, port);
+        this.state = new NodeState(hostname, port);
 
         kryo = new Kryo();
-
     }
 
     private void persistState() throws KeeperException, InterruptedException {

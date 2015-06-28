@@ -18,8 +18,10 @@ appModule.controller('MainCtrl', ['$scope', '$http', '$interval', function($scop
     		return;
     	}
         $scope.updateImage = $interval(function() {
+        	var start = new Date().getTime();
             $http.get('image').then(function(result) {
             	$scope.image = result.data;
+            	$scope.duration = new Date().getTime() - start;
             });
         }, speed);
     }
@@ -56,15 +58,36 @@ appModule.directive('data', function() {
     };
 });
 
-appModule.directive('hub', function() {
+appModule.directive('commands', function($interval, $http) {
     return {
         restrict: 'E',
-        templateUrl: 'hub.html',
+        templateUrl: 'commands.html',
 
         scope: {
-            data: '='
         },
         controller: function($scope) {
+            $interval(function() {
+        	    $http.get('status/commands').then(function(result) {
+        	    	$scope.commands = result.data;
+        	    });
+            }, 1000);
+        }
+    };
+});
+
+appModule.directive('threadpool', function($interval, $http) {
+    return {
+        restrict: 'E',
+        templateUrl: 'threadpool.html',
+
+        scope: {
+        },
+        controller: function($scope) {
+            $interval(function() {
+        	    $http.get('status/threads').then(function(result) {
+        	    	$scope.threads = result.data;
+        	    });
+            }, 1000);
         }
     };
 });

@@ -15,8 +15,8 @@ public class Bottleneck {
         random = new Random();
         monitors = new HashMap<>();
         status = new Status();
-        status.minWait = 100;
-        status.maxWait = 200;
+        status.minWait = 500;
+        status.maxWait = 500;
         status.exceptionChance = 0.0;
     }
 
