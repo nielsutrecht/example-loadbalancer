@@ -1,26 +1,30 @@
 package com.nibado.example.loadbalance.lib;
 
-import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryo.io.Output;
-import org.apache.zookeeper.*;
-import org.apache.zookeeper.server.ByteBufferOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+import org.apache.zookeeper.CreateMode;
+import org.apache.zookeeper.KeeperException;
+import org.apache.zookeeper.WatchedEvent;
+import org.apache.zookeeper.Watcher;
+import org.apache.zookeeper.ZooDefs;
+import org.apache.zookeeper.ZooKeeper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.nio.ByteBuffer;
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.io.Output;
 
-public class ZkInstance implements Watcher {
-    private static final Logger LOG = LoggerFactory.getLogger(ZkInstance.class);
+public class ZkNode implements Watcher {
+    private static final Logger LOG = LoggerFactory.getLogger(ZkNode.class);
     private ZooKeeper zk;
-    private Kryo kryo;
-    private String hostname;
-    private int port;
-    private InstanceState state;
+    private final Kryo kryo;
+    private final String hostname;
+    private final int port;
+    private final InstanceState state;
     private String zNode;
 
-    public ZkInstance(String hostname, int port) throws Exception {
+    public ZkNode(final String hostname, final int port) throws Exception {
         this.port = port;
         this.hostname = hostname;
         this.state = new InstanceState(hostname, port);
@@ -36,8 +40,8 @@ public class ZkInstance implements Watcher {
     }
 
     private byte[] getStateBytes() {
-        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-        Output out = new Output(outStream);
+        final ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        final Output out = new Output(outStream);
         kryo.writeObject(out, state);
         out.flush();
         return outStream.toByteArray();
@@ -47,8 +51,8 @@ public class ZkInstance implements Watcher {
         try {
             zk.create("/nodes", new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
         }
-        catch(KeeperException e) {
-            if(e.code() != KeeperException.Code.NODEEXISTS) {
+        catch (final KeeperException e) {
+            if (e.code() != KeeperException.Code.NODEEXISTS) {
                 throw e;
             }
         }
@@ -56,20 +60,19 @@ public class ZkInstance implements Watcher {
         LOG.info("Created node with zNode {}", zNode);
     }
 
-
-
-    public void connect(String keeperConnectString) throws IOException {
+    public void connect(final String keeperConnectString) throws IOException {
+        LOG.info("Connecting to zookepers on {}", keeperConnectString);
         zk = new ZooKeeper(keeperConnectString, 2000, this);
         try {
             createRoot();
         }
-        catch(Exception e) {
+        catch (final Exception e) {
             throw new IOException(e);
         }
     }
 
     @Override
-    public void process(WatchedEvent evt) {
+    public void process(final WatchedEvent evt) {
         LOG.info("ZooKeeper event: {}", evt.getState());
     }
 
@@ -84,18 +87,18 @@ public class ZkInstance implements Watcher {
             return this;
         }
 
-        public Builder duration(int ms) {
-            if(state.getMinDuration() > ms) {
+        public Builder duration(final int ms) {
+            if (state.getMinDuration() > ms) {
                 state.setMinDuration(ms);
             }
-            if(state.getMaxDuration() < ms) {
+            if (state.getMaxDuration() < ms) {
                 state.setMaxDuration(ms);
             }
 
             return this;
         }
 
-        public Builder queueSize(int size) {
+        public Builder queueSize(final int size) {
             state.setQueueSize(size);
 
             return this;
@@ -104,7 +107,8 @@ public class ZkInstance implements Watcher {
         public void update() throws IOException {
             try {
                 persistState();
-            } catch (Exception e) {
+            }
+            catch (final Exception e) {
                 throw new IOException(e);
             }
         }

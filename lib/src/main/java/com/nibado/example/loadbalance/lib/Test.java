@@ -5,7 +5,7 @@ import java.util.Random;
 public class Test {
     public static void main(String[] argv) throws Exception {
         Random random = new Random();
-        ZkInstance instance = new ZkInstance("localhost", 8080);
+        ZkNode instance = new ZkNode("localhost", 8080);
         ZkHub hub = new ZkHub();
         new Thread(() -> {
             try {
